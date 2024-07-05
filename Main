@@ -1,0 +1,311 @@
+/*
+ * File:   DHT11_V1.c
+ * Author: Ninh
+ *
+ * Created on July 1, 2024, 6:08 PM
+ */
+
+#define _XTAL_FREQ 20000000
+
+#define RS PORTCbits.RC5
+#define EN PORTCbits.RC7
+#define D4 PORTDbits.RD4
+#define D5 PORTDbits.RD5
+#define D6 PORTDbits.RD6
+#define D7 PORTDbits.RD7
+
+#define C1 PORTCbits.RC1
+
+
+// CONFIG1
+#pragma config FOSC = EXTRC_CLKOUT// Oscillator Selection bits (RC oscillator: CLKOUT function on RA6/OSC2/CLKOUT pin, RC on RA7/OSC1/CLKIN)
+#pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+#pragma config PWRTE = OFF      // Power-up Timer Enable bit (PWRT disabled)
+#pragma config MCLRE = ON       // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
+#pragma config CP = OFF         // Code Protection bit (Program memory code protection is disabled)
+#pragma config CPD = OFF        // Data Code Protection bit (Data memory code protection is disabled)
+#pragma config BOREN = ON       // Brown Out Reset Selection bits (BOR enabled)
+#pragma config IESO = ON        // Internal External Switchover bit (Internal/External Switchover mode is enabled)
+#pragma config FCMEN = ON       // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is enabled)
+#pragma config LVP = ON         // Low Voltage Programming Enable bit (RB3/PGM pin has PGM function, low voltage programming enabled)
+
+// CONFIG2
+#pragma config BOR4V = BOR40V   // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
+#pragma config WRT = OFF        // Flash Program Memory Self Write Enable bits (Write protection off)
+
+// #pragma config statements should precede project file includes.
+// Use project enums instead of #define for ON and OFF.
+
+#include <xc.h>
+
+#define DHT11_Data_Pin   PORTAbits.RA5
+#define DHT11_Data_Pin_Direction  TRISAbits.TRISA5
+
+unsigned char Check_bit,Temp_byte_1,Temp_byte_2,RH_byte_1,RH_byte_2;
+unsigned char temper,RH,Sumation;
+
+void rotate0(void){
+    PORTCbits.RC1=1;
+    __delay_us(1000);
+    PORTCbits.RC1=0;
+    __delay_us(19000);
+}
+
+void rotate90(void){
+    PORTCbits.RC1=1;
+    __delay_us(1500);
+    PORTCbits.RC1=0;
+    __delay_us(18500);
+}
+void Lcd_Port(char a) //For 4 bit Mod
+{
+	if(a & 1)          //1 = 0001   (check bit 0)
+		D4 = 1;
+	else
+		D4 = 0;
+
+	if(a & 2)         //2  = 0010    (check bit 1)   
+		D5 = 1;
+	else
+		D5 = 0;
+
+	if(a & 4)         //4  = 0100    (check bit 2)
+		D6 = 1;
+	else
+		D6 = 0;
+
+	if(a & 8)         //8 = 1000    (check bit 3)
+		D7 = 1;
+	else
+		D7 = 0;
+}
+void Lcd_Cmd(char a)
+{
+	RS = 0;               // => RS = 0
+	Lcd_Port(a);
+	EN  = 1;             // => E = 1
+    __delay_ms(4);
+    EN  = 0;          // => E = 0
+}
+
+Lcd_Clear()
+{
+	Lcd_Cmd(0);
+	Lcd_Cmd(1);
+}
+/*
+Hang 1 0x80
+Hang 2 0xC0
+Hang 3 0x94
+Hang 4 0xD4 
+*/
+void Lcd_Set_Cursor(char a, char b)
+{
+    
+	char temp,z,y;          // a = row , b= column
+	if(a == 3)              // y = lower 4 bits, z = upper 4 bits
+	{
+	  temp = 0x94 + b - 1;
+		z = temp>>4;
+		y = temp & 0x0F;
+		Lcd_Cmd(z);
+		Lcd_Cmd(y);
+	}
+	else if(a == 4)
+	{
+		temp = 0xD4 + b - 1;
+		z = temp>>4;
+		y = temp & 0x0F;
+		Lcd_Cmd(z);
+		Lcd_Cmd(y);
+	}
+    else if(a == 1)
+	{
+		temp = 0x80 + b - 1;
+		z = temp>>4;
+		y = temp & 0x0F;
+		Lcd_Cmd(z);
+		Lcd_Cmd(y);
+	}
+    else if(a == 2)
+	{
+		temp = 0xC0 + b - 1;
+		z = temp>>4;
+		y = temp & 0x0F;
+		Lcd_Cmd(z);
+		Lcd_Cmd(y);
+	}
+}
+
+void Lcd_Init()
+{
+  Lcd_Port(0x00);
+   __delay_ms(20);
+  Lcd_Cmd(0x03);
+	__delay_ms(5);
+  Lcd_Cmd(0x03);
+	__delay_ms(11);
+  Lcd_Cmd(0x03);
+  Lcd_Cmd(0x02);
+  Lcd_Cmd(0x02);
+  Lcd_Cmd(0x08);
+  Lcd_Cmd(0x00);
+  Lcd_Cmd(0x0C);
+  Lcd_Cmd(0x00);
+  Lcd_Cmd(0x06);
+}
+
+void Lcd_Write_Char(char a)
+{
+   char temp,y;          //temp = Lower 4 bits of Data , y = Upper 4 bits of Data
+   temp = a&0x0F;        //For Lower 4 bits = 0x0F = 0000 1111
+   y = a&0xF0;           //For Upper 4 bits = 0xF0 = 1111 0000
+   RS = 1;               // => RS = 1
+   Lcd_Port(y>>4);       //Send Upper 4 bits First
+   EN = 1;
+   __delay_us(40);
+   EN = 0;
+   Lcd_Port(temp);      //Then, Send Lower 4 bits
+   EN = 1;
+   __delay_us(40);
+   EN = 0;
+}
+
+void Lcd_Write_String(char *a)
+{
+	int i;
+	for(i=0;a[i]!='\0';i++)
+	   Lcd_Write_Char(a[i]);
+}
+
+void Lcd_Shift_Right()
+{
+	Lcd_Cmd(0x01);
+	Lcd_Cmd(0x0C);
+}
+
+void Lcd_Shift_Left()
+{
+	Lcd_Cmd(0x01);
+	Lcd_Cmd(0x08);
+}
+
+void dht11_init(){
+ DHT11_Data_Pin_Direction= 0; 
+ DHT11_Data_Pin = 0; 
+ __delay_ms(18);
+ DHT11_Data_Pin = 1; 
+ __delay_us(30);
+ DHT11_Data_Pin_Direction = 1;
+ }
+
+ void find_response(){
+ Check_bit = 0;
+ __delay_us(40);
+ if (DHT11_Data_Pin == 0){
+ __delay_us(80);
+ if (DHT11_Data_Pin == 1){
+    Check_bit = 1;
+ }     
+ __delay_us(50);}
+ }
+ 
+ 
+ char read_dht11(){
+ char data, for_count;
+ for(for_count = 0; for_count < 8; for_count++){
+     while(!DHT11_Data_Pin); 
+    __delay_us(30);
+    if(DHT11_Data_Pin == 0){
+        data&= ~(1<<(7 - for_count)); 
+    }
+    else{
+        data|= (1 << (7 - for_count)); 
+        while(DHT11_Data_Pin);
+    } 
+    }
+ return data;
+ }
+ 
+char Temp[] = "00.0  C";
+char Hum[] = "00.0  %";
+int a, b,c, d, e;
+
+void main(void) {
+    ANSEL = ANSELH = 0x00;
+    unsigned int a;
+    TRISCbits.TRISC5 = 0;
+    TRISCbits.TRISC7 = 0;
+    TRISD = 0x00;
+    Lcd_Init();
+    while(1) {
+      dht11_init();
+      find_response();
+      if(Check_bit == 1){
+        RH_byte_1 = read_dht11();
+        RH_byte_2 = read_dht11();
+        Temp_byte_1 = read_dht11();
+        Temp_byte_2 = read_dht11();
+        Sumation = read_dht11();
+        if(Sumation == ((RH_byte_1+RH_byte_2+Temp_byte_1+Temp_byte_2) & 0XFF)){
+            temper = Temp_byte_1;
+            RH = RH_byte_1;                        
+            Lcd_Set_Cursor(3,1);                  
+            Lcd_Write_String("NHIET DO : ");
+            Lcd_Write_String("                ");
+          
+            
+            e= temper * 100; //2523
+            a = (e/1000) % 10; //2
+            b = (e/100) %10;  //5
+            c = (e/10) %10;  //2
+            d = (e/1) %10; //3
+        
+            Temp[0] = a + '0';
+            Temp[1] = b + '0';
+            Temp[3] = c + '0';
+            Temp[4] = d + '0';
+            Lcd_Set_Cursor(3,11);
+            Lcd_Write_String(Temp);
+           
+            Lcd_Set_Cursor(4,1);            
+            Lcd_Write_String("DO AM    : ");
+            
+            e= RH * 100; //2523
+            a = (e/1000) % 10; //2
+            b = (e/100) %10;  //5
+            c = (e/10) %10;  //2
+            d = (e/1) %10; //3
+        
+            Hum[0] = a + '0';
+            Hum[1] = b + '0';
+            Hum[3] = c + '0';
+            Hum[4] = d + '0';
+            Lcd_Set_Cursor(4,11);
+            Lcd_Write_String(Hum);
+            
+            
+            Lcd_Set_Cursor(1, 3);
+            Lcd_Write_String("AUTOMATIC GARDEN");
+            Lcd_Set_Cursor(2, 1);
+            Lcd_Write_String("THOI TIET:");
+            Lcd_Write_String("                "); 
+            Lcd_Set_Cursor(2, 11);
+            if(C1 == 0) {
+                __delay_ms(100);
+                rotate0();
+                Lcd_Write_String("NANG");
+                } 
+            else {
+                __delay_ms(100);
+                rotate90();
+                Lcd_Write_String("MUA");
+            }
+        } 
+        else {
+            Lcd_Set_Cursor(4,1);
+            Lcd_Write_String("Check sum error");
+      }
+    }
+  }
+}
