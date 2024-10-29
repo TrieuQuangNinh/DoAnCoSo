@@ -1,0 +1,254 @@
+[p GLOBOPT AUTOSTATIC IEEE_DBL IEEE_FLT PIC14 PICREGULAR PICMID ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F887 ]
+[d frameptr 0 ]
+"5 D:\App_Xc8\pic\sources\c99\common\awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+"5 D:\App_Xc8\pic\sources\c99\common\awmod.c
+[v ___awmod __awmod `(i  1 e 2 0 ]
+"10 D:\App_Xc8\pic\sources\c99\common\sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+"15 D:\App_Xc8\pic\sources\c99\common\Umul16.c
+[v ___wmul __wmul `(ui  1 e 2 0 ]
+"4 D:\App_Xc8\pic\sources\c99\common\Umul8_16.c
+[v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
+"6 D:\App_Xc8\pic\sources\c99\pic\__eeprom.c
+[v ___eecpymem __eecpymem `(v  1 e 1 0 ]
+"39
+[v ___memcpyee __memcpyee `(v  1 e 1 0 ]
+"43 D:\Project_Mplab\Nap_dht11.X\Nap_dht11.c
+[v _Lcd_SetBit Lcd_SetBit `(v  1 e 1 0 ]
+"64
+[v _Lcd_Cmd Lcd_Cmd `(v  1 e 1 0 ]
+"73
+[v _Lcd_Clear Lcd_Clear `(i  1 e 2 0 ]
+"100
+[v _Lcd_Set_Cursor Lcd_Set_Cursor `(v  1 e 1 0 ]
+"111
+[v _Lcd_Start Lcd_Start `(v  1 e 1 0 ]
+"129
+[v _Lcd_Print_Char Lcd_Print_Char `(v  1 e 1 0 ]
+"145
+[v _Lcd_Print_String Lcd_Print_String `(v  1 e 1 0 ]
+"152
+[v _dht11_init dht11_init `(v  1 e 1 0 ]
+"161
+[v _find_response find_response `(v  1 e 1 0 ]
+"172
+[v _read_dht11 read_dht11 `(uc  1 e 1 0 ]
+"192
+[v _main main `(i  1 e 2 0 ]
+[s S80 . 1 `uc 1 RA0 1 0 :1:0 
+`uc 1 RA1 1 0 :1:1 
+`uc 1 RA2 1 0 :1:2 
+`uc 1 RA3 1 0 :1:3 
+`uc 1 RA4 1 0 :1:4 
+`uc 1 RA5 1 0 :1:5 
+`uc 1 RA6 1 0 :1:6 
+`uc 1 RA7 1 0 :1:7 
+]
+"183 D:/App_Mplab/packs/Microchip/PIC16Fxxx_DFP/1.6.156/xc8\pic\include\proc\pic16f887.h
+[u S89 . 1 `S80 1 . 1 0 ]
+[v _PORTAbits PORTAbits `VES89  1 e 1 @5 ]
+[s S22 . 1 `uc 1 RC0 1 0 :1:0 
+`uc 1 RC1 1 0 :1:1 
+`uc 1 RC2 1 0 :1:2 
+`uc 1 RC3 1 0 :1:3 
+`uc 1 RC4 1 0 :1:4 
+`uc 1 RC5 1 0 :1:5 
+`uc 1 RC6 1 0 :1:6 
+`uc 1 RC7 1 0 :1:7 
+]
+"307
+[u S31 . 1 `S22 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES31  1 e 1 @7 ]
+[s S59 . 1 `uc 1 TRISA0 1 0 :1:0 
+`uc 1 TRISA1 1 0 :1:1 
+`uc 1 TRISA2 1 0 :1:2 
+`uc 1 TRISA3 1 0 :1:3 
+`uc 1 TRISA4 1 0 :1:4 
+`uc 1 TRISA5 1 0 :1:5 
+`uc 1 TRISA6 1 0 :1:6 
+`uc 1 TRISA7 1 0 :1:7 
+]
+"1433
+[u S68 . 1 `S59 1 . 1 0 ]
+[v _TRISAbits TRISAbits `VES68  1 e 1 @133 ]
+[s S103 . 1 `uc 1 TRISC0 1 0 :1:0 
+`uc 1 TRISC1 1 0 :1:1 
+`uc 1 TRISC2 1 0 :1:2 
+`uc 1 TRISC3 1 0 :1:3 
+`uc 1 TRISC4 1 0 :1:4 
+`uc 1 TRISC5 1 0 :1:5 
+`uc 1 TRISC6 1 0 :1:6 
+`uc 1 TRISC7 1 0 :1:7 
+]
+"1557
+[u S112 . 1 `S103 1 . 1 0 ]
+[v _TRISCbits TRISCbits `VES112  1 e 1 @135 ]
+"1602
+[v _TRISD TRISD `VEuc  1 e 1 @136 ]
+"3387
+[v _ANSEL ANSEL `VEuc  1 e 1 @392 ]
+"3449
+[v _ANSELH ANSELH `VEuc  1 e 1 @393 ]
+"4152
+[v _RC5 RC5 `VEb  1 e 0 @61 ]
+"4158
+[v _RC7 RC7 `VEb  1 e 0 @63 ]
+"4197
+[v _RD4 RD4 `VEb  1 e 0 @68 ]
+"4200
+[v _RD5 RD5 `VEb  1 e 0 @69 ]
+"4203
+[v _RD6 RD6 `VEb  1 e 0 @70 ]
+"4206
+[v _RD7 RD7 `VEb  1 e 0 @71 ]
+"24 D:\Project_Mplab\Nap_dht11.X\Nap_dht11.c
+[v _Check_bit Check_bit `uc  1 e 1 0 ]
+[v _Temp_byte_1 Temp_byte_1 `uc  1 e 1 0 ]
+[v _Temp_byte_2 Temp_byte_2 `uc  1 e 1 0 ]
+[v _RH_byte_1 RH_byte_1 `uc  1 e 1 0 ]
+[v _RH_byte_2 RH_byte_2 `uc  1 e 1 0 ]
+"25
+[v _temper temper `uc  1 e 1 0 ]
+[v _RH RH `uc  1 e 1 0 ]
+[v _Sumation Sumation `uc  1 e 1 0 ]
+"188
+[v _Temp Temp `[8]uc  1 e 8 0 ]
+"189
+[v _Hum Hum `[8]uc  1 e 8 0 ]
+"190
+[v _b b `i  1 e 2 0 ]
+[v _c c `i  1 e 2 0 ]
+[v _d d `i  1 e 2 0 ]
+[v _e e `i  1 e 2 0 ]
+"192
+[v _main main `(i  1 e 2 0 ]
+{
+"198
+[v main@a a `ui  1 a 2 13 ]
+"271
+} 0
+"172
+[v _read_dht11 read_dht11 `(uc  1 e 1 0 ]
+{
+"173
+[v read_dht11@for_count for_count `uc  1 a 1 2 ]
+[v read_dht11@data data `uc  1 a 1 1 ]
+"186
+} 0
+"161
+[v _find_response find_response `(v  1 e 1 0 ]
+{
+"170
+} 0
+"152
+[v _dht11_init dht11_init `(v  1 e 1 0 ]
+{
+"159
+} 0
+"15 D:\App_Xc8\pic\sources\c99\common\Umul16.c
+[v ___wmul __wmul `(ui  1 e 2 0 ]
+{
+"17
+[v ___wmul@product product `ui  1 a 2 4 ]
+"15
+[v ___wmul@multiplier multiplier `ui  1 p 2 0 ]
+[v ___wmul@multiplicand multiplicand `ui  1 p 2 2 ]
+"53
+} 0
+"5 D:\App_Xc8\pic\sources\c99\common\awmod.c
+[v ___awmod __awmod `(i  1 e 2 0 ]
+{
+"10
+[v ___awmod@sign sign `uc  1 a 1 1 ]
+[v ___awmod@counter counter `uc  1 a 1 0 ]
+"5
+[v ___awmod@divisor divisor `i  1 p 2 8 ]
+[v ___awmod@dividend dividend `i  1 p 2 10 ]
+"34
+} 0
+"5 D:\App_Xc8\pic\sources\c99\common\awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+{
+"10
+[v ___awdiv@quotient quotient `i  1 a 2 6 ]
+"11
+[v ___awdiv@sign sign `uc  1 a 1 5 ]
+[v ___awdiv@counter counter `uc  1 a 1 4 ]
+"5
+[v ___awdiv@divisor divisor `i  1 p 2 0 ]
+[v ___awdiv@dividend dividend `i  1 p 2 2 ]
+"41
+} 0
+"111 D:\Project_Mplab\Nap_dht11.X\Nap_dht11.c
+[v _Lcd_Start Lcd_Start `(v  1 e 1 0 ]
+{
+"127
+} 0
+"100
+[v _Lcd_Set_Cursor Lcd_Set_Cursor `(v  1 e 1 0 ]
+{
+[v Lcd_Set_Cursor@row row `uc  1 a 1 wreg ]
+"104
+[v Lcd_Set_Cursor@address address `uc  1 a 1 6 ]
+"100
+[v Lcd_Set_Cursor@row row `uc  1 a 1 wreg ]
+[v Lcd_Set_Cursor@column column `uc  1 p 1 4 ]
+"101
+[v Lcd_Set_Cursor@rowOffsets rowOffsets `DC[4]uc  1 s 4 rowOffsets ]
+"103
+[v Lcd_Set_Cursor@row row `uc  1 a 1 7 ]
+"109
+} 0
+"145
+[v _Lcd_Print_String Lcd_Print_String `(v  1 e 1 0 ]
+{
+"147
+[v Lcd_Print_String@i i `i  1 a 2 11 ]
+"145
+[v Lcd_Print_String@a a `*.26uc  1 p 2 9 ]
+"150
+} 0
+"129
+[v _Lcd_Print_Char Lcd_Print_Char `(v  1 e 1 0 ]
+{
+[v Lcd_Print_Char@data data `uc  1 a 1 wreg ]
+"141
+[v Lcd_Print_Char@i_162 i `i  1 a 2 7 ]
+"137
+[v Lcd_Print_Char@i i `i  1 a 2 5 ]
+"131
+[v Lcd_Print_Char@Upper_Nibble Upper_Nibble `uc  1 a 1 3 ]
+[v Lcd_Print_Char@Lower_Nibble Lower_Nibble `uc  1 a 1 2 ]
+"129
+[v Lcd_Print_Char@data data `uc  1 a 1 wreg ]
+"132
+[v Lcd_Print_Char@data data `uc  1 a 1 4 ]
+"143
+} 0
+"73
+[v _Lcd_Clear Lcd_Clear `(i  1 e 2 0 ]
+{
+"77
+} 0
+"64
+[v _Lcd_Cmd Lcd_Cmd `(v  1 e 1 0 ]
+{
+[v Lcd_Cmd@a a `uc  1 a 1 wreg ]
+[v Lcd_Cmd@a a `uc  1 a 1 wreg ]
+"66
+[v Lcd_Cmd@a a `uc  1 a 1 3 ]
+"71
+} 0
+"43
+[v _Lcd_SetBit Lcd_SetBit `(v  1 e 1 0 ]
+{
+[v Lcd_SetBit@A A `uc  1 a 1 wreg ]
+[v Lcd_SetBit@A A `uc  1 a 1 wreg ]
+"46
+[v Lcd_SetBit@A A `uc  1 a 1 0 ]
+"62
+} 0
